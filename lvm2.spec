@@ -249,6 +249,8 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_sbindir}/lvdisplay
 %{_sbindir}/lvextend
 %{_sbindir}/lvmdiskscan
+%{_sbindir}/lvmdevices
+%{_sbindir}/lvm_import_vdo
 %{_sbindir}/lvmsadc
 %{_sbindir}/lvmsar
 %{_sbindir}/lvreduce
@@ -277,6 +279,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_sbindir}/vgextend
 %{_sbindir}/vgimport
 %{_sbindir}/vgimportclone
+%{_sbindir}/vgimportdevices
 %{_sbindir}/vgmerge
 %{_sbindir}/vgmknodes
 %{_sbindir}/vgreduce
@@ -303,7 +306,9 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_mandir}/man8/lvm-config.8.gz
 %{_mandir}/man8/lvmconfig.8.gz
 %{_mandir}/man8/lvm-dumpconfig.8.gz
+%{_mandir}/man8/lvm_import_vdo.8.gz
 %{_mandir}/man8/lvmdiskscan.8.gz
+%{_mandir}/man8/lvmdevices.8.gz
 %{_mandir}/man8/lvmdump.8.gz
 %{_mandir}/man8/lvm-fullreport.8.gz
 %{_mandir}/man8/lvmsadc.8.gz
@@ -333,6 +338,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_mandir}/man8/vgexport.8.gz
 %{_mandir}/man8/vgextend.8.gz
 %{_mandir}/man8/vgimport.8.gz
+%{_mandir}/man8/vgimportdevices.8.gz
 %{_mandir}/man8/vgimportclone.8.gz
 %{_mandir}/man8/vgmerge.8.gz
 %{_mandir}/man8/vgmknodes.8.gz
