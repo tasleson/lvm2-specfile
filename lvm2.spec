@@ -1,3 +1,10 @@
+
+
+
+%global snap_tstamp 20220913
+%global commit 908c32ead7951c9da2315a54fe89dd4f0dd854cb
+%global shortcommit  %(c=%{commit}; echo ${c:0:7})
+
 %global device_mapper_version 1.02.175
 
 %global enable_cache 1
@@ -48,8 +55,8 @@ Name: lvm2
 %if 0%{?rhel}
 Epoch: %{rhel}
 %endif
-Version: 2.03.11
-Release: 9%{?dist}
+Version: 2.03.17
+Release: %{snap_tstamp}git%{shortcommit}%{?dist}
 License: GPLv2
 URL: https://sourceware.org/lvm2/
 Source0: https://sourceware.org/pub/lvm2/releases/LVM2.%{version}.tgz
@@ -714,6 +721,5 @@ An extensive functional testsuite for LVM2.
 %endif
 
 %changelog
-
-
-
+* Tue Sep 13 2022 Tony Asleson <tasleson@redhat.com> - 2.03.17-20220913git908c32e
+- Snapshot build for testing
