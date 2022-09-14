@@ -53,39 +53,6 @@ Release: 9%{?dist}
 License: GPLv2
 URL: https://sourceware.org/lvm2/
 Source0: https://sourceware.org/pub/lvm2/releases/LVM2.%{version}.tgz
-Patch0: lvm2-set-default-preferred_names.patch
-Patch3: lvm2-2_03_12-lvmlockd-sscanf-buffer-size-warnings.patch
-# BZ 1915497:
-Patch4: lvm2-2_03_12-alloc-enhance-estimation-of-sufficient_pes_free.patch
-Patch5: lvm2-2_03_12-tests-check-thin-pool-corner-case-allocs.patch
-Patch6: lvm2-2_03_12-tests-check-full-zeroing-of-thin-pool-metadata.patch
-# BZ 1915580:
-Patch7: lvm2-2_03_12-integrity-fix-segfault-on-error-path-when-replacing-.patch
-# BZ 1872695:
-Patch8: lvm2-2_03_12-devs-remove-invalid-path-name-aliases.patch
-Patch9: lvm2-2_03_12-make-generate.patch
-Patch10: lvm2-2_03_12-label_scan-fix-missing-free-of-filtered_devs.patch
-# BZ 1917920:
-Patch11: lvm2-2_03_12-pvck-fix-warning-and-exit-code-for-non-4k-mda1-offse.patch
-Patch12: lvm2-2_03_12-WHATS_NEW-update.patch
-# BZ 1921214:
-Patch13: lvm2-2_03_12-writecache-use-cleaner-message-instead-of-table-relo.patch
-# BZ 1909699:
-Patch14: lvm2-2_03_12-man-update-lvmthin.patch
-Patch15: lvm2-2_03_12-thin-improve-16g-support-for-thin-pool-metadata.patch
-Patch16: lvm2-2_03_12-pool-limit-pmspare-to-16GiB.patch
-Patch17: lvm2-2_03_12-cache-reuse-code-for-metadata-min_max.patch
-Patch18: lvm2-2_03_12-tests-check-16G-thin-pool-metadata-size.patch
-Patch19: lvm2-2_03_12-tests-update-thin-and-cache-checked-messages.patch
-# BZ 1914389:
-Patch20: lvm2-2_03_12-lvcreate-use-lv_passes_readonly_filter.patch
-Patch21: lvm2-2_03_12-test-check-read_only_volume_list-tagging-works.patch
-# BZ 1859659:
-Patch22: lvm2-2_03_12-filter-mpath-work-with-nvme-devices.patch
-# BZ 1925871:
-Patch23: lvm2-2_03_12-dev_get_primary_dev-fix-invalid-path-check.patch
-# Fix editline compilation:
-Patch24: lvm2-2_03_12-lvm-Fix-editline-compilation.patch
 
 BuildRequires: make
 BuildRequires: gcc
@@ -142,29 +109,6 @@ or more physical volumes and creating one or more logical volumes
 
 %prep
 %setup -q -n LVM2.%{version}
-%patch0 -p1 -b .backup0
-%patch3 -p1 -b .backup3
-%patch4 -p1 -b .backup4
-%patch5 -p1 -b .backup5
-%patch6 -p1 -b .backup6
-%patch7 -p1 -b .backup7
-%patch8 -p1 -b .backup8
-%patch9 -p1 -b .backup9
-%patch10 -p1 -b .backup10
-%patch11 -p1 -b .backup11
-%patch12 -p1 -b .backup12
-%patch13 -p1 -b .backup13
-%patch14 -p1 -b .backup14
-%patch15 -p1 -b .backup15
-%patch16 -p1 -b .backup16
-%patch17 -p1 -b .backup17
-%patch18 -p1 -b .backup18
-%patch19 -p1 -b .backup19
-%patch20 -p1 -b .backup20
-%patch21 -p1 -b .backup21
-%patch22 -p1 -b .backup22
-%patch23 -p1 -b .backup23
-%patch24 -p1 -b .backup24
 
 %build
 %global _default_pid_dir /run
