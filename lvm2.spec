@@ -343,7 +343,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_mandir}/man8/vgscan.8.gz
 %{_mandir}/man8/vgsplit.8.gz
 %{_udevdir}/11-dm-lvm.rules
-%{_udevdir}/69-dm-lvm-metad.rules
+%{_udevdir}/69-dm-lvm.rules
 %if %{enable_lvmpolld}
 %{_mandir}/man8/lvmpolld.8.gz
 %{_mandir}/man8/lvm-lvpoll.8.gz
@@ -371,7 +371,6 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_tmpfilesdir}/%{name}.conf
 %{_unitdir}/blk-availability.service
 %{_unitdir}/lvm2-monitor.service
-%{_unitdir}/lvm2-pvscan@.service
 %{_prefix}/lib/systemd/system-generators/lvm2-activation-generator
 %if %{enable_lvmpolld}
 %{_unitdir}/lvm2-lvmpolld.socket
