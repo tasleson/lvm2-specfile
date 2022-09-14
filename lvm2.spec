@@ -286,6 +286,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_sbindir}/vgscan
 %{_sbindir}/vgsplit
 %{_mandir}/man5/lvm.conf.5.gz
+%{_mandir}/man7/lvmautoactivation.7.gz
 %{_mandir}/man7/lvmcache.7.gz
 %{_mandir}/man7/lvmraid.7.gz
 %{_mandir}/man7/lvmreport.7.gz
@@ -299,7 +300,6 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_mandir}/man8/lvdisplay.8.gz
 %{_mandir}/man8/lvextend.8.gz
 %{_mandir}/man8/lvm.8.gz
-%{_mandir}/man8/lvm2-activation-generator.8.gz
 %{_mandir}/man8/lvm-config.8.gz
 %{_mandir}/man8/lvmconfig.8.gz
 %{_mandir}/man8/lvm-dumpconfig.8.gz
@@ -371,7 +371,6 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_tmpfilesdir}/%{name}.conf
 %{_unitdir}/blk-availability.service
 %{_unitdir}/lvm2-monitor.service
-%{_prefix}/lib/systemd/system-generators/lvm2-activation-generator
 %if %{enable_lvmpolld}
 %{_unitdir}/lvm2-lvmpolld.socket
 %{_unitdir}/lvm2-lvmpolld.service
