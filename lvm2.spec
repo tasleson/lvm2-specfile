@@ -245,6 +245,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %endif
 
 # Other files
+%{_libexecdir}/lvresize_fs_helper
 %{_sbindir}/lvchange
 %{_sbindir}/lvconvert
 %{_sbindir}/lvcreate
