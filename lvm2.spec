@@ -1,10 +1,4 @@
 
-
-
-%global snap_tstamp 20220913
-%global commit 908c32ead7951c9da2315a54fe89dd4f0dd854cb
-%global shortcommit  %(c=%{commit}; echo ${c:0:7})
-
 %global device_mapper_version 1.02.175
 
 %global enable_cache 1
@@ -56,7 +50,7 @@ Name: lvm2
 Epoch: %{rhel}
 %endif
 Version: 2.03.17
-Release: %{snap_tstamp}git%{shortcommit}%{?dist}
+Release: 1%{?dist}
 License: GPLv2
 URL: https://sourceware.org/lvm2/
 Source0: https://sourceware.org/pub/lvm2/releases/LVM2.%{version}.tgz
