@@ -138,6 +138,7 @@ or more physical volumes and creating one or more logical volumes
   --enable-blkid_wiping \
   --disable-readline \
   --enable-editline \
+  --enable-dependency-tracking \
 %if %{enable_cluster}
   --with-cluster=internal \
   %if %{enable_cmirror}
