@@ -392,8 +392,8 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 Summary: Development libraries and headers
 License: LGPLv2
 Requires: %{name} = %{?epoch}:%{version}-%{release}
-Requires: device-mapper-devel = %{?epoch}:%{device_mapper_version}-%{release}
-Requires: device-mapper-event-devel = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper-devel = %{?epoch}:%{version}-%{release}
+Requires: device-mapper-event-devel = %{?epoch}:%{version}-%{release}
 Requires: pkgconfig
 
 %description devel
@@ -408,7 +408,7 @@ the lvm2 libraries.
 %package libs
 Summary: Shared libraries for lvm2
 License: LGPLv2
-Requires: device-mapper-event = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper-event = %{?epoch}:%{version}-%{release}
 
 %description libs
 This package contains shared lvm2 libraries for applications.
@@ -485,7 +485,7 @@ LVM commands use lvmlockd to coordinate access to shared storage.
 %package -n cmirror
 Summary: Daemon for device-mapper-based clustered mirrors
 Requires: corosync >= %{corosync_version}
-Requires: device-mapper = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper = %{?epoch}:%{version}-%{release}
 Requires: resource-agents >= %{resource_agents_version}
 
 %description -n cmirror
@@ -573,7 +573,7 @@ Summary: Device mapper utility
 Version: %{device_mapper_version}
 License: GPLv2
 URL: https://www.sourceware.org/dm/
-Requires: device-mapper-libs = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper-libs = %{?epoch}:%{version}-%{release}
 Requires: util-linux-core >= %{util_linux_version}
 Requires: systemd >= %{systemd_version}
 # We need dracut to install required udev rules if udev_sync
@@ -606,7 +606,7 @@ for the kernel device-mapper.
 Summary: Development libraries and headers for device-mapper
 Version: %{device_mapper_version}
 License: LGPLv2
-Requires: device-mapper = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper = %{?epoch}:%{version}-%{release}
 Requires: pkgconfig
 
 %description -n device-mapper-devel
@@ -622,7 +622,7 @@ the device-mapper libraries.
 Summary: Device-mapper shared library
 Version: %{device_mapper_version}
 License: LGPLv2
-Requires: device-mapper = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper = %{?epoch}:%{version}-%{release}
 
 %description -n device-mapper-libs
 This package contains the device-mapper shared library, libdevmapper.
@@ -636,8 +636,8 @@ This package contains the device-mapper shared library, libdevmapper.
 %package -n device-mapper-event
 Summary: Device-mapper event daemon
 Version: %{device_mapper_version}
-Requires: device-mapper = %{?epoch}:%{device_mapper_version}-%{release}
-Requires: device-mapper-event-libs = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper = %{?epoch}:%{version}-%{release}
+Requires: device-mapper-event-libs = %{?epoch}:%{version}-%{release}
 Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
@@ -685,7 +685,7 @@ libdevmapper-event.
 Summary: Development libraries and headers for the device-mapper event daemon
 Version: %{device_mapper_version}
 License: LGPLv2
-Requires: device-mapper-event = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper-event = %{?epoch}:%{version}-%{release}
 Requires: pkgconfig
 
 %description -n device-mapper-event-devel
