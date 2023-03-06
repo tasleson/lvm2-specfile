@@ -41,6 +41,10 @@
   %endif
 %endif
 
+# Disable this for now ...
+%global enable_cluster 0
+%global enable_lockd_dlm 0
+
 # Do not reset Release to 1 unless both lvm2 and device-mapper
 # versions are increased together.
 
