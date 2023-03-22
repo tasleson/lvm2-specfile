@@ -53,7 +53,7 @@ Name: lvm2
 %if 0%{?rhel}
 Epoch: %{rhel}
 %endif
-Version: 2.03.20
+Version: 2.03.21
 Release: 1%{?dist}
 License: GPLv2
 URL: https://sourceware.org/lvm2/
