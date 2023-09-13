@@ -1,9 +1,6 @@
-
-%global device_mapper_version 1.02.175
+%global device_mapper_version 1.02.196
 
 %global enable_cache 1
-%global enable_cluster 1
-%global enable_cmirror 1
 %global enable_lvmdbusd 1
 %global enable_lvmlockd 1
 %global enable_lvmpolld 1
@@ -15,7 +12,7 @@
 %global enable_integrity 1
 
 %global system_release_version 23
-%global systemd_version 189-3
+%global systemd_version 247-1
 %global dracut_version 002-18
 %global util_linux_version 2.24
 %global bash_version 4.0
@@ -31,8 +28,6 @@
 
 %if 0%{?rhel} && 0%{?rhel} <= 8
   %ifnarch i686 x86_64 ppc64le s390x
-    %global enable_cluster 0
-    %global enable_cmirror 0
     %global enable_lockd_dlm 0
   %endif
 
@@ -40,10 +35,6 @@
     %global enable_lockd_sanlock 0
   %endif
 %endif
-
-# Disable this for now ...
-%global enable_cluster 0
-%global enable_lockd_dlm 0
 
 # Do not reset Release to 1 unless both lvm2 and device-mapper
 # versions are increased together.
@@ -53,7 +44,7 @@ Name: lvm2
 %if 0%{?rhel}
 Epoch: %{rhel}
 %endif
-Version: 2.03.21
+Version: 2.03.23
 Release: 1%{?dist}
 License: GPLv2
 URL: https://sourceware.org/lvm2/
@@ -69,10 +60,7 @@ BuildRequires: libblkid-devel >= %{util_linux_version}
 BuildRequires: ncurses-devel
 BuildRequires: libedit-devel
 BuildRequires: libaio-devel
-%if %{enable_cluster}
-BuildRequires: corosynclib-devel >= %{corosync_version}
-%endif
-%if %{enable_cluster} || %{enable_lockd_dlm}
+%if %{enable_lockd_dlm}
 BuildRequires: dlm-devel >= %{dlm_version}
 %endif
 BuildRequires: module-init-tools
@@ -113,7 +101,7 @@ or more physical volumes and creating one or more logical volumes
 (kind of logical partitions) in volume groups.
 
 %prep
-%setup -q -n LVM2.%{version}
+%autosetup -p1 -n LVM2.%{version}
 
 %build
 %global _default_pid_dir /run
@@ -140,17 +128,6 @@ or more physical volumes and creating one or more logical volumes
   --enable-cmdlib \
   --enable-dmeventd \
   --enable-blkid_wiping \
-  --disable-readline \
-  --enable-editline \
-  --enable-dependency-tracking \
-%if %{enable_cluster}
-  --with-cluster=internal \
-  %if %{enable_cmirror}
-  --enable-cmirrord \
-  %endif
-%else
-  --with-cluster=internal \
-%endif
   --with-udevdir=%{_udevdir} --enable-udev_sync \
 %if %{enable_thin}
   --with-thin=internal \
@@ -182,7 +159,11 @@ or more physical volumes and creating one or more logical volumes
 %if %{enable_integrity}
   --with-integrity=internal \
 %endif
-  --disable-silent-rules
+  --with-default-use-devices-file=1 \
+  --disable-silent-rules \
+  --enable-app-machineid \
+  --enable-editline \
+  --disable-readline
 
 %make_build
 
@@ -243,21 +224,20 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_sbindir}/fsadm
 %{_sbindir}/lvm
 %{_sbindir}/lvmconfig
+%{_sbindir}/lvmdevices
 %{_sbindir}/lvmdump
 %if %{enable_lvmpolld}
 %{_sbindir}/lvmpolld
 %endif
+%{_sbindir}/lvm_import_vdo
 
 # Other files
-%{_libexecdir}/lvresize_fs_helper
 %{_sbindir}/lvchange
 %{_sbindir}/lvconvert
 %{_sbindir}/lvcreate
 %{_sbindir}/lvdisplay
 %{_sbindir}/lvextend
 %{_sbindir}/lvmdiskscan
-%{_sbindir}/lvmdevices
-%{_sbindir}/lvm_import_vdo
 %{_sbindir}/lvmsadc
 %{_sbindir}/lvmsar
 %{_sbindir}/lvreduce
@@ -295,6 +275,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_sbindir}/vgs
 %{_sbindir}/vgscan
 %{_sbindir}/vgsplit
+%attr(755, -, -) %{_libexecdir}/lvresize_fs_helper
 %{_mandir}/man5/lvm.conf.5.gz
 %{_mandir}/man7/lvmautoactivation.7.gz
 %{_mandir}/man7/lvmcache.7.gz
@@ -312,10 +293,9 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_mandir}/man8/lvm.8.gz
 %{_mandir}/man8/lvm-config.8.gz
 %{_mandir}/man8/lvmconfig.8.gz
-%{_mandir}/man8/lvm-dumpconfig.8.gz
-%{_mandir}/man8/lvm_import_vdo.8.gz
-%{_mandir}/man8/lvmdiskscan.8.gz
 %{_mandir}/man8/lvmdevices.8.gz
+%{_mandir}/man8/lvm-dumpconfig.8.gz
+%{_mandir}/man8/lvmdiskscan.8.gz
 %{_mandir}/man8/lvmdump.8.gz
 %{_mandir}/man8/lvm-fullreport.8.gz
 %{_mandir}/man8/lvmsadc.8.gz
@@ -335,6 +315,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_mandir}/man8/pvresize.8.gz
 %{_mandir}/man8/pvs.8.gz
 %{_mandir}/man8/pvscan.8.gz
+%{_mandir}/man8/lvm_import_vdo.8.gz
 %{_mandir}/man8/vgcfgbackup.8.gz
 %{_mandir}/man8/vgcfgrestore.8.gz
 %{_mandir}/man8/vgchange.8.gz
@@ -345,8 +326,8 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_mandir}/man8/vgexport.8.gz
 %{_mandir}/man8/vgextend.8.gz
 %{_mandir}/man8/vgimport.8.gz
-%{_mandir}/man8/vgimportdevices.8.gz
 %{_mandir}/man8/vgimportclone.8.gz
+%{_mandir}/man8/vgimportdevices.8.gz
 %{_mandir}/man8/vgmerge.8.gz
 %{_mandir}/man8/vgmknodes.8.gz
 %{_mandir}/man8/vgreduce.8.gz
@@ -384,6 +365,7 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 %{_tmpfilesdir}/%{name}.conf
 %{_unitdir}/blk-availability.service
 %{_unitdir}/lvm2-monitor.service
+#%%{_unitdir}/lvm-vgchange@.service # vgchange is now part of udev rule
 %if %{enable_lvmpolld}
 %{_unitdir}/lvm2-lvmpolld.socket
 %{_unitdir}/lvm2-lvmpolld.service
@@ -396,8 +378,8 @@ systemctl start lvm2-lvmpolld.socket >/dev/null 2>&1 || :
 Summary: Development libraries and headers
 License: LGPLv2
 Requires: %{name} = %{?epoch}:%{version}-%{release}
-Requires: device-mapper-devel = %{?epoch}:%{version}-%{release}
-Requires: device-mapper-event-devel = %{?epoch}:%{version}-%{release}
+Requires: device-mapper-devel = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper-event-devel = %{?epoch}:%{device_mapper_version}-%{release}
 Requires: pkgconfig
 
 %description devel
@@ -412,7 +394,7 @@ the lvm2 libraries.
 %package libs
 Summary: Shared libraries for lvm2
 License: LGPLv2
-Requires: device-mapper-event = %{?epoch}:%{version}-%{release}
+Requires: device-mapper-event = %{?epoch}:%{device_mapper_version}-%{release}
 
 %description libs
 This package contains shared lvm2 libraries for applications.
@@ -479,55 +461,6 @@ LVM commands use lvmlockd to coordinate access to shared storage.
 
 %endif
 
-###############################################################################
-# Cluster mirror subpackage
-# The 'clvm' OCF script to manage cmirrord instance is part of resource-agents.
-###############################################################################
-%if %{enable_cluster}
-%if %{enable_cmirror}
-
-%package -n cmirror
-Summary: Daemon for device-mapper-based clustered mirrors
-Requires: corosync >= %{corosync_version}
-Requires: device-mapper = %{?epoch}:%{version}-%{release}
-Requires: resource-agents >= %{resource_agents_version}
-
-%description -n cmirror
-Daemon providing device-mapper-based mirrors in a shared-storage cluster.
-
-%files -n cmirror
-%{_sbindir}/cmirrord
-%{_mandir}/man8/cmirrord.8.gz
-
-##############################################################################
-# Cmirror-standalone subpackage
-##############################################################################
-%package -n cmirror-standalone
-Summary: Additional files to support device-mapper-based clustered mirrors in standalone mode
-License: GPLv2
-Requires: cmirror >= %{?epoch}:%{version}-%{release}
-
-%description -n cmirror-standalone
-
-Additional files needed to run daemon for device-mapper-based clustered
-mirrors in standalone mode as a service without cluster resource manager
-involvement (e.g. pacemaker).
-
-%post -n cmirror-standalone
-%systemd_post lvm2-cmirrord.service
-
-%preun -n cmirror-standalone
-%systemd_preun lvm2-cmirrord.service
-
-%postun -n cmirror-standalone
-%systemd_postun lvm2-cmirrord.service
-
-%files -n cmirror-standalone
-%{_unitdir}/lvm2-cmirrord.service
-
-%endif
-%endif
-
 ##############################################################################
 # LVM D-Bus daemon
 ##############################################################################
@@ -565,7 +498,7 @@ Daemon for access to LVM2 functionality through a D-Bus interface.
 %{_datadir}/dbus-1/system-services/com.redhat.lvmdbus1.service
 %{_mandir}/man8/lvmdbusd.8.gz
 %{_unitdir}/lvm2-lvmdbusd.service
-%{python3_sitelib}/lvmdbusd/*
+%{python3_sitelib}/lvmdbusd
 
 %endif
 
@@ -577,7 +510,7 @@ Summary: Device mapper utility
 Version: %{device_mapper_version}
 License: GPLv2
 URL: https://www.sourceware.org/dm/
-Requires: device-mapper-libs = %{?epoch}:%{version}-%{release}
+Requires: device-mapper-libs = %{?epoch}:%{device_mapper_version}-%{release}
 Requires: util-linux-core >= %{util_linux_version}
 Requires: systemd >= %{systemd_version}
 # We need dracut to install required udev rules if udev_sync
@@ -610,7 +543,7 @@ for the kernel device-mapper.
 Summary: Development libraries and headers for device-mapper
 Version: %{device_mapper_version}
 License: LGPLv2
-Requires: device-mapper = %{?epoch}:%{version}-%{release}
+Requires: device-mapper = %{?epoch}:%{device_mapper_version}-%{release}
 Requires: pkgconfig
 
 %description -n device-mapper-devel
@@ -626,7 +559,7 @@ the device-mapper libraries.
 Summary: Device-mapper shared library
 Version: %{device_mapper_version}
 License: LGPLv2
-Requires: device-mapper = %{?epoch}:%{version}-%{release}
+Requires: device-mapper = %{?epoch}:%{device_mapper_version}-%{release}
 
 %description -n device-mapper-libs
 This package contains the device-mapper shared library, libdevmapper.
@@ -640,8 +573,8 @@ This package contains the device-mapper shared library, libdevmapper.
 %package -n device-mapper-event
 Summary: Device-mapper event daemon
 Version: %{device_mapper_version}
-Requires: device-mapper = %{?epoch}:%{version}-%{release}
-Requires: device-mapper-event-libs = %{?epoch}:%{version}-%{release}
+Requires: device-mapper = %{?epoch}:%{device_mapper_version}-%{release}
+Requires: device-mapper-event-libs = %{?epoch}:%{device_mapper_version}-%{release}
 Requires(post): systemd-units
 Requires(preun): systemd-units
 Requires(postun): systemd-units
@@ -689,7 +622,7 @@ libdevmapper-event.
 Summary: Development libraries and headers for the device-mapper event daemon
 Version: %{device_mapper_version}
 License: LGPLv2
-Requires: device-mapper-event = %{?epoch}:%{version}-%{release}
+Requires: device-mapper-event = %{?epoch}:%{device_mapper_version}-%{release}
 Requires: pkgconfig
 
 %description -n device-mapper-event-devel
